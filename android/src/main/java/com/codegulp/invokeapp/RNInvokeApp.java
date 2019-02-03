@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -53,6 +55,9 @@ public class RNInvokeApp extends ReactContextBaseJavaModule {
 
             activityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             reactContext.startActivity(activityIntent);
+            PowerManager pm = (PowerManager) reactContext.getSystemService(reactContext.POWER_SERVICE);
+            WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
+            wakeLock.acquire();
         } catch(Exception e) {
             Log.e(LOG_TAG, "Class not found", e);
             return;
